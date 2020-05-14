@@ -78,8 +78,8 @@ class PlazaVea():
                 for i, imageObject in enumerate(imageObjects.find_elements(By.TAG_NAME, 'a')):
                   urlImageNormal = imageObject.get_attribute('rel')
                   urlImageZoom = imageObject.get_attribute('zoom')
-                  urllib.request.urlretrieve(urlImageNormal, pathS + titleFileSubMenu + '/' + titleFileSubMenu3 + '/' + titleFileSubMenu4 + '/' + titleFileProduct + '/' + str(i) +" - Normal.webp")
-                  urllib.request.urlretrieve(urlImageZoom, pathS + titleFileSubMenu + '/' + titleFileSubMenu3 + '/' + titleFileSubMenu4 + '/' + titleFileProduct + '/' +str(i) + " - zoom.webp")
+                  urllib.request.urlretrieve(urlImageNormal, pathS + titleFileSubMenu + '/' + titleFileSubMenu3 + '/' + titleFileSubMenu4 + '/' + titleFileProduct + '/' + str(i + 1) +" - Normal.webp")
+                  urllib.request.urlretrieve(urlImageZoom, pathS + titleFileSubMenu + '/' + titleFileSubMenu3 + '/' + titleFileSubMenu4 + '/' + titleFileProduct + '/' +str(i + 1) + " - zoom.webp")
 
                 self.driver.close()
                 self.driver.switch_to.window(self.driver.window_handles[1])
