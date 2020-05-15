@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from itertools import chain
 from urllib.request import urlopen, Request
+from selenium.common.exceptions import NoSuchElementException
 import os
 import time
 
@@ -12,7 +13,11 @@ class PlazaVea():
 
   def entry(self):   
     pathS = './img/'
+    titleMenuBazar = '01'
+    titleMenuHogar = '02'
+    titleMenuElectro = '03'
     titleMenu = '04'
+    titleMenuBelleza = '05'
     # pathE = './img/Electro/'
     base_url = 'https://www.plazavea.com.pe'
     self.driver.maximize_window()    
@@ -75,20 +80,35 @@ class PlazaVea():
               self.driver.execute_script("window.open('');")
               self.driver.switch_to.window(self.driver.window_handles[2])          
               self.driver.get(urlProducto)  
-              time.sleep(5)      
-              imageObjects = self.driver.find_element_by_xpath('/html/body/div[3]/div[4]/div[1]/div[3]/div[1]/div[2]/ul/div[1]/div')
-  
-              for i, imageObject in enumerate(imageObjects.find_elements(By.TAG_NAME, 'a')):
-                urlImageNormal = imageObject.get_attribute('rel')
-                urlImageZoom = imageObject.get_attribute('zoom')
-                urllib.request.urlretrieve(urlImageNormal, pathS + '/' + titleMenu + '/' +  titleMenu + titleFileSubMenu + '/' + titleMenu + titleFileSubMenu + titleFileSubMenu3 + '/' + titleMenu + titleFileSubMenu + titleFileSubMenu3 + titleFileSubMenu4 + '/' + titleFileProduct + '-' + str(i + 1) +"-N.webp")
-                urllib.request.urlretrieve(urlImageZoom, pathS + '/' + titleMenu + '/' + titleMenu + titleFileSubMenu + '/' + titleMenu + titleFileSubMenu + titleFileSubMenu3 + '/' + titleMenu + titleFileSubMenu + titleFileSubMenu3 + titleFileSubMenu4 + '/' + titleFileProduct + '-' + str(i + 1) + "-Z.webp")
+              time.sleep(5)    
+
+              try:  
+                imageObjects = self.driver.find_element_by_xpath('/html/body/div[3]/div[4]/div[1]/div[3]/div[1]/div[2]/ul/div[1]/div')
+                for i, imageObject in enumerate(imageObjects.find_elements(By.TAG_NAME, 'a')):
+                  urlImageNormal = imageObject.get_attribute('rel')
+                  urlImageZoom = imageObject.get_attribute('zoom')
+                  urllib.request.urlretrieve(urlImageNormal, pathS + '/' + titleMenu + '/' +  titleMenu + titleFileSubMenu + '/' + titleMenu + titleFileSubMenu + titleFileSubMenu3 + '/' + titleMenu + titleFileSubMenu + titleFileSubMenu3 + titleFileSubMenu4 + '/' + titleFileProduct + '-' + str(i + 1) +"-N.webp")
+                  urllib.request.urlretrieve(urlImageZoom, pathS + '/' + titleMenu + '/' + titleMenu + titleFileSubMenu + '/' + titleMenu + titleFileSubMenu + titleFileSubMenu3 + '/' + titleMenu + titleFileSubMenu + titleFileSubMenu3 + titleFileSubMenu4 + '/' + titleFileProduct + '-' + str(i + 1) + "-Z.webp")
+              except NoSuchElementException:
+                print("No Element found")                
 
               self.driver.close()
               self.driver.switch_to.window(self.driver.window_handles[1])
             #endproducts
             self.driver.close()
             self.driver.switch_to.window(self.driver.window_handles[0])
+        
+    #start Menu: Electro - Hogar - Bazar - Belleza 
+    # self.driver.find_element_by_xpath('//div[@id="event-nonfood"]').click()
+    # time.sleep(10)    
+
+    # subMenusElectro = subMenusMarket.find_elements_by_xpath('div[contains(@class, "MainMenu__subcategory")]')
+    # for i, menuElectro in enumerate(subMenusElectro):
+    #   os.mkdir(pathS + '/' + titleMenu)
+
+
+
+
     self.driver.quit()
 PlazaVea = PlazaVea()
 PlazaVea.entry()
